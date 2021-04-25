@@ -7,8 +7,25 @@ class Board extends React.Component {
         this.state = {
             squares: Array(9).fill(null),
             xIsNext: this.props.playX,
-            isWithAI: false,
+            isWithAI: this.props.isWithAI,
         }
+    }
+
+    playComputerMove(arr) {
+        const getRandomInt = (min, max) => {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        let index = getRandomInt(0, 8);
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[index] === null) {
+                return index;
+            } else {
+                index = getRandomInt(0, 8);
+            }
+        }
+        return -1;
     }
 
     handleClick(i) {
@@ -21,6 +38,18 @@ class Board extends React.Component {
             squares: squares,
             xIsNext: !this.state.xIsNext,
         });
+        if (this.state.isWithAI === true) {
+            // code for playing with ai
+            let aiMove = this.playComputerMove(squares);
+            if (aiMove >= 0) {
+                console.log('ai',aiMove, this.state.xIsNext)
+                squares[aiMove] = !this.state.xIsNext ? 'X' : 'O';
+                this.setState({
+                    squares: squares,
+                    xIsNext: this.state.xIsNext,
+                });
+            }
+        }
     }
     resetGame() {
         this.setState({
@@ -39,9 +68,12 @@ class Board extends React.Component {
 
     render() {
         const winner = calculateWinner(this.state.squares);
+        const isDraw = this.state.squares.every((e) => e !== null);
         let status;
         if (winner) {
             status = 'Winner: ' + winner;
+        } else if (isDraw) {
+            status = 'Match Draw';
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }

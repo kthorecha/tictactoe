@@ -27,7 +27,7 @@ class GameMaster extends React.Component {
             onClick={(playWith) => this.choosePlayMode(playWith)}
             /> : this.state.isPlayX == null ? <PlaySide
             setSide={(side) => this.setPlaySide(side)}
-            /> : <Game playX={this.state.isPlayX} />
+            /> : <Game playX={this.state.isPlayX} isWithAI={this.state.isWithAI} />
         )
     }
 }
