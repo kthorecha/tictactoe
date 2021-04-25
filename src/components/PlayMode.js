@@ -4,7 +4,7 @@ class PlayMode extends React.Component {
     render() {
         return (
             <div className="playmode">
-                <h1>Choose your side</h1>
+                <h1>Choose your Mode</h1>
                 <div className="btn btn-light">
                 <input type="radio"
                     name="chooseOp"
