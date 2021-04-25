@@ -1,17 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Game from './components/Game';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import PlayMode from './components/PlayMode';
+import PlaySide from './components/PlaySide';
+
+class GameMaster extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isWithAI: null,
+            isPlayX: null,
+        }
+    }
+    choosePlayMode(playWith) {
+        // console.log(playWith);
+        playWith === 'ai' ? this.setState({ isWithAI: true}) : this.setState({ isWithAI: false});
+    }
+    setPlaySide(side) {
+        side === 'X' ? this.setState({ isPlayX : true }) : this.setState({ isPlayX : false });
+    }
+    render() {
+        return (
+            this.state.isWithAI == null ? <PlayMode
+            onClick={(playWith) => this.choosePlayMode(playWith)}
+            /> : this.state.isPlayX == null ? <PlaySide
+            setSide={(side) => this.setPlaySide(side)}
+            /> : <Game playX={this.state.isPlayX} />
+        )
+    }
+}
+
+// ========================================
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <GameMaster />,
+    document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
